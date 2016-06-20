@@ -91,5 +91,7 @@ zle -N history-beginning-search-forward-end history-search-end
 bindkey "^P" history-beginning-search-backward-end
 bindkey "^N" history-beginning-search-forward-end 
 
+
+DOTS_DIR=~/dotfiles
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
-[ -f ~/.zshrc.alias ] && source ~/dotfiles/.zshrc.alias
+[ -f ${DOTS_DIR}/.zshrc.alias ] && source ${DOTS_DIR}/.zshrc.alias

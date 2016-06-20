@@ -2,7 +2,7 @@
 # Shell command
 # -------------------------
 
-alias ls='ls -F --color'
+alias ls='ls -aF --color'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 

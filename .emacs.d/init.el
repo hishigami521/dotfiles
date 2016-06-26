@@ -13,25 +13,8 @@
 
 ;; ------------------------------------------------------------------------
 ;; @ font
-;; Windowsで英数と日本語にMeiryoを指定
-;; Macで英数と日本語にRictyを指定
-(let ((ws window-system))
-  (cond ((eq ws 'w32)
-         (set-face-attribute 'default nil
-                             :family "Meiryo"  ;; 英数
-                             :height 100)
-         (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Meiryo")))  ;; 日本語
-        ((eq ws 'ns)
-         (set-face-attribute 'default nil
-                             :family "Ricty"  ;; 英数
-                             :height 140)
-         (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Ricty")))))  ;; 日本語
-
 (global-font-lock-mode t)
 (setq initial-default-font-size 12)
-;; (setq default-font-size initial-default-font-size)
-;; (set-font-size)
-
 
 ;; ------------------------------------------------------------------------
 ;; @ bar

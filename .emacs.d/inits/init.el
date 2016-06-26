@@ -1,10 +1,5 @@
 ;; -*- Mode: Emacs-Lisp ; Coding: utf-8 -*-
-;; ------------------------------------------------------------------------
-;; @ cask setting
-(cond ((eq system-type 'cygwin)
-       (require 'cask "~/.cask/cask.el"))
-      ((eq system-type 'mac)
-       (require 'cask )))
+(require 'cask "~/.cask/cask.el")
 (cask-initialize)
 
 ;; ------------------------------------------------------------------------
@@ -22,12 +17,6 @@
                              :family "Ricty"  ;; 英数
                              :height 140)
          (set-fontset-font nil 'japanese-jisx0208 (font-spec :family "Ricty")))))  ;; 日本語
-
-(global-font-lock-mode t)
-(setq initial-default-font-size 12)
-;; (setq default-font-size initial-default-font-size)
-;; (set-font-size)
-
 
 ;; ------------------------------------------------------------------------
 ;; @ bar
@@ -57,13 +46,14 @@
 ;;(set-face-background 'show-paren-match-face "#500") ;; color for paran
 
 ;; ------------------------------------------------------------------------
-;; @ mark-mode
+;; @ region
+
 (transient-mark-mode t)
+
 ;; Color for selected region
 (set-face-background 'region "#888")
 
 ;; rectangular region
-(global-set-key "\C-cv" 'rectangle-mark-mode)
 
 
 ;; ------------------------------------------------------------------------
@@ -96,9 +86,6 @@
 (setq eol-mnemonic-dos "(CRLF)")
 (setq eol-mnemonic-mac "(CR)")
 (setq eol-mnemonic-unix "(LF)")
-
-;; treatment for symbolic files
-(setq vc-follow-symlinks t)
 
 ;; ------------------------------------------------------------------------
 ;; @ startup message
@@ -173,6 +160,12 @@
 ;; 	       '(alpha . (100 100 100 100))
 ;; 	       )
 ;; 	      default-frame-alist))
+
+;; font
+(global-font-lock-mode t)
+(setq initial-default-font-size 12)
+;; (setq default-font-size initial-default-font-size)
+;; (set-font-size)
 
 ;; ------------------------------------------------------------------------
 ;; @ global truncation

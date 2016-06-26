@@ -1,0 +1,14 @@
+# Z shell
+zsh 
+zsh-completions
+# Utilities
+wget 
+cask
+autoconf
+automake
+aspell --lang=en
+# Terminal & Editor
+screen
+emacs
+# Language
+markdown

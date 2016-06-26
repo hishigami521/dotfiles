@@ -1,10 +1,9 @@
 ;; -*- Mode: Emacs-Lisp ; Coding: utf-8 -*-
 ;; ------------------------------------------------------------------------
 ;; @ cask setting
-(cond ((eq system-type 'cygwin)
-       (require 'cask "~/.cask/cask.el"))
-      ((eq system-type 'mac)
-       (require 'cask )))
+(require 'cask )
+(when (eq system-type 'cygwin)
+       (require 'cask "~/.cask/cask.el") )
 (cask-initialize)
 
 ;; ------------------------------------------------------------------------

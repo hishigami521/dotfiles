@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<root>
+  <item>
+    <name>Private Key</name>
+    <appendix>Private Key-Binds</appendix>
+    <identifier>private.keybinds</identifier>
+    <autogen>
+      __KeyToKey__
+      KeyCode::T, VK_CONTROL, ModifierFlag::SHIFT_L,
+      KeyCode::T, VK_COMMAND
+    </autogen>
+    <autogen>
+      __KeyToKey__
+      KeyCode::W, VK_CONTROL, ModifierFlag::SHIFT_L,
+      KeyCode::W, VK_COMMAND
+    </autogen>
+    <autogen>
+      __KeyToKey__
+      KeyCode::L, VK_CONTROL, ModifierFlag::SHIFT_L,
+      KeyCode::L, VK_COMMAND
+    </autogen>
+    <autogen>
+      __KeyToKey__
+      KeyCode::K, VK_CONTROL, ModifierFlag::SHIFT_L,
+      KeyCode::L, VK_COMMAND
+    </autogen>
+    <autogen>
+      __KeyToKey__
+      KeyCode::C, VK_CONTROL, ModifierFlag::SHIFT_L,
+      KeyCode::C, VK_COMMAND
+    </autogen>
+    <autogen>
+      __KeyToKey__
+      KeyCode::V, VK_CONTROL, ModifierFlag::SHIFT_L,
+      KeyCode::V, VK_COMMAND
+    </autogen>
+    <autogen>
+      __KeyToKey__
+      KeyCode::P, VK_CONTROL, ModifierFlag::SHIFT_L,
+      KeyCode::P, VK_COMMAND
+    </autogen>
+    <autogen>
+      __KeyToKey__
+      KeyCode::S, VK_CONTROL, ModifierFlag::SHIFT_L,
+      KeyCode::S, VK_COMMAND
+    </autogen>
+  </item>
+
+  <appdef>
+    <appname>iTerm2</appname>
+    <equal>com.googlecode.iterm2</equal>
+  </appdef>
+  <appdef>
+    <appname>GChrome</appname>
+    <equal>com.google.Chrome</equal>
+  </appdef>
+</root>
+
+<!-- <list> -->
+<!--   <item> -->
+<!--     <only>GChrome</only> -->
+<!--     <name>KeyBindSwapForChrome</name> -->
+<!--     <identifier></identifier> -->
+<!--     <autogen> -->
+<!--       --KeyToKey-- -->
+<!--       KeyCode:: -->
+<!--     </autogen> -->
+<!--   </item> -->
+<!-- </list> -->

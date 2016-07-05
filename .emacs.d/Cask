@@ -1,7 +1,7 @@
 (source gnu)
 (source melpa)
 
-(depends-on "anything")
+(depends-on "helm")
 (depends-on "auto-complete")
 (depends-on "init-loader")
 (depends-on "markdown-mode")

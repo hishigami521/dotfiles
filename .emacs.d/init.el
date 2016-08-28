@@ -261,24 +261,25 @@
 
 ;; ------------------------------------------------------------------------
 ;; @ spell check
-;; (setq-default ispell-program-name "aspell")
-;; (eval-after-load "ispell"
-;;   '(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+")))
-;; ;; comment ここに書いたモードではコメント領域のところだけ
-;; (mapc ;; only for comments
-;;  (lambda (hook)
-;;    (add-hook hook 'flyspell-prog-mode))
-;;  '(
-;;    c-mode-common-hook
-;;    emacs-lisp-mode-hook
-;;    ))
-;; (mapc ;; always 
-;;  (lambda (hook)
-;;    (add-hook hook
-;;              '(lambda () (flyspell-mode 1))))
-;;  '(
-;;    yatex-mode-hook
-;;         ))
+(setq-default ispell-program-name "aspell")
+(eval-after-load "ispell"
+  '(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+")))
+;; comment ここに書いたモードではコメント領域のところだけ
+(mapc ;; only for comments
+ (lambda (hook)
+   (add-hook hook 'flyspell-prog-mode))
+ '(
+   c-mode-common-hook
+   emacs-lisp-mode-hook
+   ))
+(mapc ;; always 
+ (lambda (hook)
+   (add-hook hook
+             '(lambda () (flyspell-mode 1))))
+ '(
+   yatex-mode-hook
+   ;; latex-mode-hook
+        ))
 
 ;; ------------------------------------------------------------------------
 ;; @ markdown-mode
@@ -295,6 +296,114 @@
 (add-hook 'c-mode-hook
           (lambda()
             (c-set-style "stroustrup")))
+
+;; ------------------------------------------------------------------------
+;; @ LaTeX
+(setq tex-start-commands nil)
+(setq latex-run-command "pdflatex -shell-escape")
+(setq tex-bibtex-command "bibtex")
+(setq platex-run-command "platex -shell-escape")
+(setq tex-dvipdf-command "dvipdfmx")
+(setq tex-pbibtex-command "pbibtex")
+(setq tex-view-pdf-command "evince")
+
+;; (setq tex-fontify-script nil)
+
+(defun tex-get-temp-cmd ()
+  "Check the head line of the current buffer, and if it begins by %#!, return the command following it."
+  (let ((head-of-buffer (car (split-string (buffer-string) "\n"))))
+    (if (and (>= (length head-of-buffer) 3)
+             (string= (substring head-of-buffer 0 3) "%#!"))
+        (substring head-of-buffer 3))))
+
+(defun my-tex-bibtex-file (&optional arg)
+  "Run BibTeX on the current buffer's file."
+  (interactive "P")
+  (if (tex-shell-running)
+      (tex-kill-job)
+    (tex-start-shell))
+  (let* (shell-dirtrack-verbose
+         (source-file (tex-main-file))
+         (tex-out-file
+          (tex-append (file-name-nondirectory source-file) ""))
+         (file-dir (file-name-directory (expand-file-name source-file))))
+    (tex-send-command tex-shell-cd-command file-dir)
+    (if (consp arg)
+        (tex-send-command tex-pbibtex-command tex-out-file)
+      (tex-send-command tex-bibtex-command tex-out-file)))
+  (tex-display-shell))
+
+(defun my-latex-file (&optional arg)
+  "Prompt to save all buffers and run LaTeX on current buffer's file.
+This function is more useful than \\[tex-buffer] when you need the
+`.aux' file of LaTeX to have the correct name."
+  (interactive "P")
+  (when tex-offer-save
+    (save-some-buffers))
+  (let* ((source-file (tex-main-file))
+         (file-dir (file-name-directory (expand-file-name source-file))))
+    (if (tex-shell-running)
+        (tex-kill-job)
+      (tex-start-shell))
+    (setq tex-temp-cmd (tex-get-temp-cmd))
+    (cond (tex-temp-cmd
+           (if (<= (length (split-string tex-temp-cmd)) 1)
+               (setq tex-temp-cmd (concat tex-temp-cmd " " source-file)))
+           (tex-send-tex-command tex-temp-cmd file-dir))
+          (t
+           (if (not (consp arg))
+               (tex-start-tex latex-run-command source-file file-dir)
+             (tex-start-tex platex-run-command source-file file-dir)
+             (setq tex-print-file (expand-file-name source-file))
+             (let ((print-file-name-dvi (tex-append tex-print-file ".dvi")))
+               (tex-send-command tex-dvipdf-command print-file-name-dvi nil)))))))
+
+(defun tex-view-pdf (&optional arg)
+  "Run PDF viewer."
+  (interactive "P")
+  (if (tex-shell-running)
+      (tex-kill-job)
+    (tex-start-shell))
+  (let ((view-file-name-pdf (tex-append (buffer-file-name) ".pdf")))
+    (tex-send-command tex-view-pdf-command view-file-name-pdf t)))
+
+;; tex-mode hook
+(add-hook 'tex-mode-hook
+	  (lambda ()
+	    (flyspell-mode)
+            (ac-flyspell-workaround)
+            ;; (ac-l-setup)
+	    (turn-on-reftex)
+            (define-key latex-mode-map "\C-c\C-c" 'comment-region)
+            (define-key latex-mode-map "\C-c\C-f" 'my-latex-file)
+            (define-key latex-mode-map "\C-c\C-i" 'my-tex-bibtex-file)
+            (define-key latex-mode-map "\C-c\C-v" 'tex-view-pdf)
+	    (define-key latex-mode-map "\C-cx" 'reftex-reset-mode)))
+
+;; latex-mode hook
+(add-hook 'LaTeX-mode-hook
+	  (lambda ()
+	    (flyspell-mode)
+            (ac-flyspell-workaround)
+            ;; (ac-l-setup)
+	    (turn-on-reftex)
+            (flyspell-mode)
+            (define-key latex-mode-map "\C-c\C-c" 'comment-region)
+            (define-key latex-mode-map "\C-c\C-f" 'my-latex-file)
+            (define-key latex-mode-map "\C-c\C-i" 'my-tex-bibtex-file)
+            (define-key latex-mode-map "\C-c\C-v" 'tex-view-pdf)
+	    (define-key latex-mode-map "\C-cx" 'reftex-reset-mode)))
+
+;;; reftex-default-bib
+(setq reftex-default-bibliography '("/home/hishigami/Dropbox/texwork/hishigami.bib"))
+
+;; bibtex-mode hook
+(add-hook 'bibtex-mode-hook
+	  (lambda ()
+	    (turn-on-reftex)
+	    (flyspell-mode)
+            (ac-flyspell-workaround)
+            (ac-l-setup)))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

@@ -1,0 +1,11 @@
+# settings for Mac
+
+# ls setting
+alias ls='gls -aF --color'
+alias ll='gls -laF --color'
+
+# color setting for ls 
+# eval $(gdircolors /path/to/dircolors-solarized/dircolors.ansi-universal)
+if [ -n "$LS_COLORS" ]; then
+    zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+fi

@@ -213,12 +213,11 @@
 (require 'auto-complete)
 (require 'auto-complete-config)
 (global-auto-complete-mode t)
-(add-to-list 'ac-modes 'text-mode)
 (add-to-list 'ac-modes 'fundamental-mode)
 (add-to-list 'ac-modes 'org-mode)
 (add-to-list 'ac-modes 'yatex-mode)
 (add-to-list 'ac-modes 'nxml-mode)
-(ac-set-trigger-key "TAB")
+`(ac-set-trigger-key "TAB")
 (setq ac-delay 0.1)
 (setq ac-use-menu-map t)
 (define-key ac-menu-map "\C-n" 'ac-next)
@@ -271,6 +270,7 @@
  '(
    c-mode-common-hook
    emacs-lisp-mode-hook
+   sh-mode-hook
    ))
 (mapc ;; always 
  (lambda (hook)
@@ -278,8 +278,30 @@
              '(lambda () (flyspell-mode 1))))
  '(
    yatex-mode-hook
+<<<<<<< HEAD
    ;; latex-mode-hook
         ))
+=======
+        ))
+
+;; ------------------------------------------------------------------------
+;; @ makefile-mode
+(autoload 'makefile-mode "makefile-bsdmake-mode"
+  "Major mode for editing Makefile files" t)
+(add-to-list 'auto-mode-alist '("Makefile" . makefile-bsdmake-mode))
+(add-to-list 'auto-mode-alist '("Makefile\\..*$" . makefile-bsdmake-mode))
+(add-to-list 'auto-mode-alist '("Makefile_\\..*$" . makefile-bsdmake-mode))
+(add-to-list 'auto-mode-alist '("\\.mk\\'" . makefile-bsdmake-mode))
+(add-to-list 'ac-modes 'makefile-bsdmake-mode)
+
+;; ------------------------------------------------------------------------
+;; @ shell-script-mode
+(autoload 'shell-script-mode "sh-mode"
+  "Major mode for editing Shell-Script files" t)
+(add-to-list 'auto-mode-alist '("[.]zsh.*" . sh-mode))
+;; (add-to-list 'auto-mode-alist '("\\.zshrc[.|_].*" . sh-mode))
+(add-to-list 'ac-modes 'sh-mode)
+>>>>>>> 82d8716d20a94602e713bd57bc662a28e1058c7e
 
 ;; ------------------------------------------------------------------------
 ;; @ markdown-mode
@@ -290,6 +312,7 @@
 (add-to-list 'auto-mode-alist '("\\.txt\\'" . markdown-mode))
 ;; (setq auto-mode-alist
 ;;          (cons '("\\.text" . markdown-mode) auto-mode-alist))
+(add-to-list 'ac-modes 'markdown-mode)
 
 ;; ------------------------------------------------------------------------
 ;; @ C-mode

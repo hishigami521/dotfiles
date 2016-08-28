@@ -35,12 +35,6 @@ setopt auto_menu
 # enable to change candidates by cursors
 zstyle ':completion:*:default' menu select=1
 
-# color setting 
-# eval `dircolors`
-# export ZLS_COLORS=$LS_COLORS
-export LS_COLORS='di=36;40:ln=35;40:so=32;40:pi=33;40:ex=31;40:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;46'
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-
 # enable to use extended glob 
 # cf: FILENAME GENERATION in `man zshexpn`
 setopt extended_glob
@@ -70,7 +64,7 @@ precmd () {
 # -------------------------
 autoload colors
 PROMPT='%F{magenta}%n@%m %F{white}%d 
-%F{yellow}%# '
+%F{yellow}%# %F{grey}'
 RPROMPT='%1(v|%F{green}%1v%f|)' # show info of git
 
 # -------------------------
@@ -92,6 +86,6 @@ bindkey "^P" history-beginning-search-backward-end
 bindkey "^N" history-beginning-search-forward-end 
 
 
-DOTS_DIR=~/dotfiles
+DOTS=~/dotfiles
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
-[ -f ${DOTS_DIR}/.zshrc.alias ] && source ${DOTS_DIR}/.zshrc.alias
+[ -f ${DOTS}/.zshrc.alias ] && source ${DOTS}/.zshrc.alias
